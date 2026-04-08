@@ -4,9 +4,10 @@
 // import heroImg from './assets/hero.png'
 // import './App.css'
 
-import { useEffect, useState } from 'react'
-import './App.css'
-import type { Asteroid, ApiResponse } from '../types/types'
+import { useEffect, useState } from 'react';
+import './App.css';
+import type { Asteroid, ApiResponse } from '../types/types';
+import { CustomChart } from './CustomChart';
 
 function App() {
   const [asteroids, setAsteroids] = useState<Asteroid[]>([]);
@@ -75,6 +76,12 @@ function App() {
       </div>
       
       <p>Найдено объектов: {filteredAsteroids.length}</p>
+
+      {/* Вставляем наш кастомный график */}
+      <section style={{ margin: '40px 0' }}>
+        <h2>Визуализация: Блеск vs Дистанция</h2>
+        <CustomChart data={filteredAsteroids} />
+      </section>
 
       {/* 3. Список карточек (теперь тоже использует filteredAsteroids) */}
       <div className="asteroid-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '20px', marginTop: '20px' }}>
