@@ -56,8 +56,12 @@ export const CustomChart: React.FC<Props> = ({ data }) => {
     const xTicks = generateTicks(minX, maxX, 6);
     const yTicks = generateTicks(minY, maxY, 6);  
   return (
-    <div style={{ position: 'relative', background: '#111', padding: '20px', borderRadius: '8px' }}>
-      <svg width={width} height={height} style={{ overflow: 'visible' }}>
+    <div style={{ width: '100%', maxWidth: '1000px', margin: '0 auto', position: 'relative', background: '#111', padding: '20px', borderRadius: '8px' }}>
+      <svg
+        viewBox={`0 0 ${width} ${height}`}
+        preserveAspectRatio="xMidYMid meet"
+        style={{ width: '100%', height: 'auto', overflow: 'visible' }}
+      >
         {/* Оси */}
         <line x1={padding} y1={height - padding} x2={width - padding} y2={height - padding} stroke="#555" />
         <line x1={padding} y1={padding} x2={padding} y2={height - padding} stroke="#555" />
@@ -115,9 +119,15 @@ export const CustomChart: React.FC<Props> = ({ data }) => {
             cx={getX(d.x)}
             cy={getY(d.y)}
             r={hoveredNode?.id === d.original.id ? 8 : 4}
-            fill={d.original.is_potentially_hazardous_asteroid ? '#ff4d4d' : '#4db8ff'}
+            fill={d.original.is_potentially_hazardous_asteroid ? '#ff4d4d' : '#369f59'}
+            // Для ПК
             onMouseEnter={() => setHoveredNode(d.original)}
             onMouseLeave={() => setHoveredNode(null)}
+            // Для мобильных устройств
+            onClick={() => {
+              // Если мы уже нажали на эту точку — "снимаем" выделение, иначе — выделяем
+              setHoveredNode(hoveredNode?.id === d.original.id ? null : d.original);
+            }}
             style={{ transition: 'all 0.2s', cursor: 'pointer' }}
           />
         ))}
@@ -129,16 +139,23 @@ export const CustomChart: React.FC<Props> = ({ data }) => {
 
       {/* Тултип (всплывающее окно) */}
       {hoveredNode && (
-        <div style={{
-          position: 'absolute',
-          top: '10px',
-          right: '10px',
-          background: 'rgba(255, 255, 255, 0.9)',
-          color: '#000',
-          padding: '10px',
-          borderRadius: '4px',
-          fontSize: '12px',
-          pointerEvents: 'none'
+        // <div style={{
+        //   position: 'absolute',
+        //   top: '10px',
+        //   right: '10px',
+        //   background: 'rgba(255, 255, 255, 0.9)',
+        //   color: '#000',
+        //   padding: '10px',
+        //   borderRadius: '4px',
+        //   fontSize: '12px',
+        //   pointerEvents: 'none'
+        // }}>
+        <div className="mobile-info" style={{ 
+          marginTop: '10px', 
+          padding: '10px', 
+          border: '1px solid #4db8ff', 
+          borderRadius: '5px',
+          display: 'block' // Показываем только если есть выбранный объект
         }}>
           <strong>{hoveredNode.name}</strong><br/>
           Дата зближення: {hoveredNode.close_approach_data[0].close_approach_date}<br/>

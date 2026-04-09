@@ -105,10 +105,10 @@ function App() {
       {!hasStarted ? (
         <div className="welcome-screen" style={{ textAlign: 'center' }}>
           <h2 style={{ margin: '20px auto', width: '50%', textAlign: 'center', color: '#0930ca' }}>Ласкаво просимо до центру моніторингу навколоземних астероїдів!</h2>
-          <p style={{ fontSize: '18px', color: '#1a1a1a', marginTop: '5px' }}>
+          <p style={{ fontSize: '18px', marginTop: '5px' }}>
             Дізнайтеся про астероїди, які максимально наближаються до Землі в обраний вами діапазон дат!
           </p>
-          <div className="date-picker-container" style={{ margin: '20px 0', padding: '15px', background: '#1a1a1a', borderRadius: '8px' }}>
+          <div className="date-picker-container" style={{ display: 'flex', flexDirection: 'column', gap: '5px', margin: '20px auto', padding: '15px', background: '#1a1a1a', borderRadius: '8px' }}>
             <label htmlFor="start-date" style={{ marginRight: '10px', color: '#e7e7e7' }}>
               Оберіть дату початку спостережень, щоб отримати дані від NASA:
             </label>
@@ -119,7 +119,7 @@ function App() {
               onChange={(e) => setSelectedDate(e.target.value)}
               // Добавляем ограничение:
               max={getMaxDate()}
-              style={{ padding: '5px', borderRadius: '4px', border: '1px solid #555', background: '#333', color: '#fff' }}
+              style={{ padding: '5px', borderRadius: '4px', border: '1px solid #555', background: '#333', color: '#fff', margin: '20px auto' }}
             />
             <p style={{ fontSize: '14px', color: '#888', marginTop: '5px' }}>
               * Буде показано дані за 7 днів, закінчуючи цією датою
@@ -153,20 +153,26 @@ function App() {
                 </p>
               </div>
               {/* 3. Панель управления */}
-              <div className="controls" style={{ marginBottom: '20px', display: 'flex', gap: '20px', justifyContent: 'center' }}>
-                <label>
+              <div className="controls" style={{ marginBottom: '20px', display: 'flex', flexDirection: 'column', gap: '20px', justifyContent: 'center' }}>
+                <label style={{ display: 'flex', gap: '10px', justifyContent: 'center', alignItems: 'center' }}>
                   <input
                     type="checkbox"
                     checked={showOnlyHazardous}
                     onChange={(e) => setShowOnlyHazardous(e.target.checked)}
+                    style={{ width: '20px', height: '20px' }}
                   />
                   ⚠️ Тільки небезпечні
                 </label>
+                <p>Сортувати за:</p>
 
-                <select value={sortBy} onChange={(e) => setSortBy(e.target.value as any)}>
-                  <option value="name">Сортувати за ім'ям</option>
-                  <option value="size">...за розміром (від max до min)</option>
-                  <option value="speed">...за швидкістю (від max до min)</option>
+                <select 
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as any)}
+                  style={{ margin: '0 auto' }}
+                >
+                  <option value="name">...ім'ям</option>
+                  <option value="size">...розміром (від max до min)</option>
+                  <option value="speed">...швидкістю (від max до min)</option>
                 </select>
               </div>
               <p>Кількість об'єктів, що відображаються: {filteredAsteroids.length}</p>
@@ -175,7 +181,12 @@ function App() {
                 <h2>Візуалізація: Блиск (зор.вел.) vs Відстань до Землі (млн. км)</h2>
                 <CustomChart data={filteredAsteroids} />
               </section>
-              {/* 3. Список карточек (теперь тоже использует filteredAsteroids) */}
+              {/* Таблица с отсортированными данными */}
+              <section>
+                <h3>Більш детальні дані</h3>
+                <AsteroidTable data={filteredAsteroids} />
+              </section>
+              {/* 4. Список карточек (теперь тоже использует filteredAsteroids) */}
               <div className="asteroid-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '20px', marginTop: '20px' }}>
                 {filteredAsteroids.map(asteroid => (
                   <div key={asteroid.id} className={`asteroid-card ${asteroid.is_potentially_hazardous_asteroid ? 'danger' : ''}`}
@@ -187,10 +198,7 @@ function App() {
                   </div>
                 ))}
               </div>
-              <section>
-                <h3>Більш детальні дані</h3>
-                <AsteroidTable data={filteredAsteroids} />
-              </section>
+              
               <div className="asteroid-grid" style={{ margin: '30px auto', padding: '30px', backgroundColor: '#bfdecd' }}>
                 <h3>Інший варіант виведення даних</h3>
                 {asteroids.map(asteroid => (
