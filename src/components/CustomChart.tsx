@@ -123,8 +123,8 @@ export const CustomChart: React.FC<Props> = ({ data }) => {
         ))}
 
         {/* Подписи осей */}
-        <text x={width / 2} y={height - 10} fill="#888" textAnchor="middle">Дистанция (км)</text>
-        <text x={10} y={height / 2} fill="#888" transform={`rotate(-90, 10, ${height / 2})`} textAnchor="middle">Блеск (H)</text>
+        <text x={width / 2} y={height - 10} fill="#888" textAnchor="middle">Відстань (км)</text>
+        <text x={10} y={height / 2} fill="#888" transform={`rotate(-90, 10, ${height / 2})`} textAnchor="middle">Блиск (зор.вел.)</text>
       </svg>
 
       {/* Тултип (всплывающее окно) */}
@@ -141,8 +141,8 @@ export const CustomChart: React.FC<Props> = ({ data }) => {
           pointerEvents: 'none'
         }}>
           <strong>{hoveredNode.name}</strong><br/>
-          Дата: {hoveredNode.close_approach_data[0].close_approach_date}<br/>
-          Блеск: {hoveredNode.absolute_magnitude_h}
+          Дата зближення: {hoveredNode.close_approach_data[0].close_approach_date}<br/>
+          Блиск: {hoveredNode.absolute_magnitude_h}
         </div>
       )}
     </div>
