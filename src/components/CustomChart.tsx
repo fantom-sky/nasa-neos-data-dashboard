@@ -12,7 +12,7 @@ export const CustomChart: React.FC<Props> = ({ data }) => {
   if (!data || data.length === 0) {
     return (
       <div style={{ color: '#888', textAlign: 'center', padding: '100px', background: '#111' }}>
-        Данные для построения графика отсутствуют
+        Дані для побудови графіка відсутні
       </div>
     );
   }
@@ -142,7 +142,9 @@ export const CustomChart: React.FC<Props> = ({ data }) => {
         }}>
           <strong>{hoveredNode.name}</strong><br/>
           Дата зближення: {hoveredNode.close_approach_data[0].close_approach_date}<br/>
-          Блиск: {hoveredNode.absolute_magnitude_h}
+          Блиск: {hoveredNode.absolute_magnitude_h}<br/>
+          Відстань до Землі: {Number(hoveredNode.close_approach_data[0].miss_distance.kilometers).toLocaleString()} км<br/>
+          Швидкість: {Math.round(Number(hoveredNode.close_approach_data[0].relative_velocity.kilometers_per_hour))} км/ч
         </div>
       )}
     </div>

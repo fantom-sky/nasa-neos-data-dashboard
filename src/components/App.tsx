@@ -8,6 +8,8 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import type { Asteroid, ApiResponse } from '../types/types';
 import { CustomChart } from './CustomChart';
+import { AsteroidTable } from './AsteroidTable';
+
 
 function App() {
   // Получаем сегодняшнюю дату в формате ГГГГ-ММ-ДД
@@ -74,7 +76,7 @@ function App() {
     setHasStarted(true);
   };
 
-  // 2. Вычисляем список, который нужно показать
+  // 2. Вычисляем список, который нужно показать после сортировки
   const filteredAsteroids = asteroids
     .filter(a => showOnlyHazardous ? a.is_potentially_hazardous_asteroid : true)
     .sort((a, b) => {
@@ -146,7 +148,7 @@ function App() {
                 <p>...</p>
                 <p><strong>Знайдено об'єктів:</strong></p>
                 <p>- всього: <strong>{asteroids.length}</strong></p>
-                <p style={{ color: hazardousCount > 0 ? '#ff4d4d' : '#4dff88' }}>
+                <p style={{ color: hazardousCount > 0 ? '#ff4d4d' : '#369f59' }}>
                   - потенційно небезпечних: <strong>{hazardousCount}</strong> ({hazardousPercentage}%) ⚠️
                 </p>
               </div>
@@ -185,7 +187,12 @@ function App() {
                   </div>
                 ))}
               </div>
-              <div className="asteroid-grid">
+              <section>
+                <h3>Більш детальні дані</h3>
+                <AsteroidTable data={filteredAsteroids} />
+              </section>
+              <div className="asteroid-grid" style={{ margin: '30px auto', padding: '30px', backgroundColor: '#bfdecd' }}>
+                <h3>Інший варіант виведення даних</h3>
                 {asteroids.map(asteroid => (
                   <div key={asteroid.id} className={`asteroid-card ${asteroid.is_potentially_hazardous_asteroid ? 'danger' : ''}`}>
                     <h3>{asteroid.name.replace(/[()]/g, '')}</h3>
@@ -199,6 +206,7 @@ function App() {
                   </div>
                 ))}
               </div>
+              
               {/* <div>
                 <h2>Asteroid Radar</h2>
                 <p>Найдено объектов за неделю: {asteroids.length}</p>
