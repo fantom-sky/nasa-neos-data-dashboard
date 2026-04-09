@@ -12,15 +12,28 @@ import { AsteroidTable } from './AsteroidTable';
 
 
 function App() {
-  // Получаем сегодняшнюю дату в формате ГГГГ-ММ-ДД
-  const getToday = () => new Date().toISOString().split('T')[0];
+  // Получаем сегодняшнюю дату в формате ГГГГ-ММ-ДД для UTC
+  // const getToday = () => new Date().toISOString().split('T')[0];
+  // Получаем сегодняшнюю дату в формате ГГГГ-ММ-ДД для локального времени
+  const getToday = () => new Date().toLocaleDateString('sv-SE');
+  // Более сложный вариант получения даты по локальному времени
+  // const getToday = () => {
+  //   const date = new Date();    
+  //   // Вытаскиваем компоненты даты локально
+  //   const year = date.getFullYear();
+  //   const month = String(date.getMonth() + 1).padStart(2, '0'); // Месяцы в JS идут от 0 до 11
+  //   const day = String(date.getDate()).padStart(2, '0');
+    
+  //   return `${year}-${month}-${day}`;
+  // };
+
   const [selectedDate, setSelectedDate] = useState(getToday());
   const [displayRange, setDisplayRange] = useState({ start: '', end: '' });
   // Создаем функцию для расчета максимально допустимой даты
   const getMaxDate = () => {
     const max = new Date();
     max.setDate(max.getDate() + 10);
-    return max.toISOString().split('T')[0];
+    return max.toLocaleDateString('sv-SE');
   };
   const [asteroids, setAsteroids] = useState<Asteroid[]>([]);
   // const [loading, setLoading] = useState(true);
@@ -46,8 +59,10 @@ function App() {
       // end.setDate(start.getDate() + 6);
       start.setDate(start.getDate() - 6);
 
-      const startDateStr = start.toISOString().split('T')[0];
-      const endDateStr = end.toISOString().split('T')[0];
+      // const startDateStr = start.toISOString().split('T')[0];
+      // const endDateStr = end.toISOString().split('T')[0];
+      const startDateStr = start.toLocaleDateString('sv-SE');
+      const endDateStr = end.toLocaleDateString('sv-SE');
 
       const url = `https://api.nasa.gov/neo/rest/v1/feed?start_date=${startDateStr}&end_date=${endDateStr}&api_key=${apiKey}`;
 
